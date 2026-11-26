@@ -1,0 +1,155 @@
+<UserControl x:Class="Keep.App.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="34,26,34,30">
+
+            <StackPanel>
+                <TextBlock Text="设置" Style="{StaticResource PageTitle}" />
+                <TextBlock Text="守护频率、系统集成与数据管理" Style="{StaticResource PageSubtitle}" />
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}" Margin="0,20,0,0">
+                <StackPanel>
+                    <TextBlock Text="守护策略" Style="{StaticResource SectionTitle}" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="检测间隔" FontSize="13" />
+                            <TextBlock Text="每次检测会比对全部守护项，发现偏离基准时按下方策略处理" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <RadioButton x:Name="Interval15" Style="{StaticResource FilterChip}" Content="15 秒" Tag="15" GroupName="interval" Checked="OnIntervalChecked" />
+                            <RadioButton x:Name="Interval30" Style="{StaticResource FilterChip}" Content="30 秒" Tag="30" GroupName="interval" Checked="OnIntervalChecked" />
+                            <RadioButton x:Name="Interval60" Style="{StaticResource FilterChip}" Content="1 分钟" Tag="60" GroupName="interval" Checked="OnIntervalChecked" />
+                            <RadioButton x:Name="Interval120" Style="{StaticResource FilterChip}" Content="2 分钟" Tag="120" GroupName="interval" Checked="OnIntervalChecked" />
+                            <RadioButton x:Name="Interval300" Style="{StaticResource FilterChip}" Content="5 分钟" Tag="300" GroupName="interval" Checked="OnIntervalChecked" />
+                            <RadioButton x:Name="Interval600" Style="{StaticResource FilterChip}" Content="10 分钟" Tag="600" GroupName="interval" Checked="OnIntervalChecked" Margin="0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Style="{StaticResource Divider}" Margin="0,16,0,0" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="发现篡改时自动还原" FontSize="13" />
+                            <TextBlock Text="关闭后只记录告警，需要手动点击「立即修复」" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" Style="{StaticResource Switch}" VerticalAlignment="Center"
+                                  IsChecked="{Binding AutoRepair, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Border Style="{StaticResource Divider}" Margin="0,16,0,0" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="监控浏览器主页与搜索引擎" FontSize="13" />
+                            <TextBlock Text="检测 Edge / Chrome 等浏览器的启动页、主页和默认搜索是否被替换" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Content="重新采集" Style="{StaticResource GhostButton}" FontSize="11" Padding="10,5" Margin="0,0,12,0" Click="OnCaptureBrowsers" />
+                            <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding MonitorBrowsers, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="系统集成" Style="{StaticResource SectionTitle}" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="开机自动启动" FontSize="13" />
+                            <TextBlock Text="登录后静默驻留托盘，不需要打开窗口" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" Style="{StaticResource Switch}" VerticalAlignment="Center"
+                                  IsChecked="{Binding StartWithWindows, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Border Style="{StaticResource Divider}" Margin="0,16,0,0" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="深度守护（停止 UCPD）" FontSize="13" />
+                            <TextBlock Text="{Binding UcpdText}" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                            <TextBlock Text="UCPD 会拦截默认浏览器、HTML、PDF 关联的写入。开启后可自动还原这些项目，代价是其它程序也可能再次改写它们。"
+                                       Style="{StaticResource MutedText}" FontSize="11" Foreground="#6E7F96" TextWrapping="Wrap" Margin="0,6,16,0" />
+                        </StackPanel>
+                        <CheckBox x:Name="DeepModeSwitch" Grid.Column="1" Style="{StaticResource Switch}"
+                                  VerticalAlignment="Top" Margin="0,4,0,0" Click="OnDeepModeClick" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="数据" Style="{StaticResource SectionTitle}" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="历史保留条数" FontSize="13" />
+                            <TextBlock Text="超出后自动清理最旧的记录" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <RadioButton x:Name="Limit100" Style="{StaticResource FilterChip}" Content="100" Tag="100" GroupName="limit" Checked="OnLimitChecked" />
+                            <RadioButton x:Name="Limit500" Style="{StaticResource FilterChip}" Content="500" Tag="500" GroupName="limit" Checked="OnLimitChecked" />
+                            <RadioButton x:Name="Limit1000" Style="{StaticResource FilterChip}" Content="1000" Tag="1000" GroupName="limit" Checked="OnLimitChecked" Margin="0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Style="{StaticResource Divider}" Margin="0,16,0,0" />
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="数据目录" FontSize="13" />
+                            <TextBlock Text="基准、设置与历史记录都保存在本地，不上传任何数据" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="打开目录" Style="{StaticResource GhostButton}"
+                                VerticalAlignment="Center" Command="{Binding OpenDataFolderCommand}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0" Padding="20,16">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Keep · 设置守护台" FontSize="12.5" FontWeight="SemiBold" />
+                        <TextBlock Text="只修改当前用户（HKCU）的关联与浏览器配置；写入前都会校验并可在历史中审计。"
+                                   Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                    </StackPanel>
+                    <TextBlock Text="v0.1.0" Style="{StaticResource MutedText}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

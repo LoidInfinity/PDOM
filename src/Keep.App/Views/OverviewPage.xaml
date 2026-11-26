@@ -1,0 +1,212 @@
+<UserControl x:Class="Keep.App.Views.OverviewPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="34,26,34,30">
+
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="总览" Style="{StaticResource PageTitle}" />
+                    <TextBlock Text="默认应用与浏览器设置的实时守护状态" Style="{StaticResource PageSubtitle}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="立即检测" Style="{StaticResource PrimaryButton}" Command="{Binding ScanCommand}" />
+                    <Button Content="以当前设置为基准" Style="{StaticResource GhostButton}"
+                            Command="{Binding CaptureCommand}" Margin="10,0,0,0" />
+                </StackPanel>
+            </Grid>
+
+            <Border Style="{StaticResource Card}" Margin="0,22,0,0" Padding="26">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="56" Height="56" CornerRadius="16" Background="{StaticResource AccentSoft}">
+                                <Path Data="M12,2 L21,5.3 V11.4 C21,16.1 17.4,19.7 12,22 C6.6,19.7 3,16.1 3,11.4 V5.3 Z"
+                                      Fill="{StaticResource Accent}" Stretch="Uniform" Margin="13" />
+                            </Border>
+                            <StackPanel Margin="18,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding StatusTitle}" FontFamily="{StaticResource DisplayFont}"
+                                           FontSize="21" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding StatusSubtitle}" Style="{StaticResource MutedText}"
+                                           TextWrapping="Wrap" MaxWidth="560" Margin="0,7,0,0" LineHeight="19" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="#101720" CornerRadius="9" Padding="12,7" HorizontalAlignment="Left" Margin="0,20,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="6" Height="6" Fill="{StaticResource Accent}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding ScanInfo}" FontSize="11.5" Foreground="{StaticResource Muted}" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="150">
+                        <TextBlock Text="下次检测" FontSize="10.5" Foreground="#5B6A7D" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding Countdown}" FontFamily="{StaticResource DisplayFont}" FontSize="30"
+                                   FontWeight="SemiBold" Foreground="{StaticResource Accent}"
+                                   HorizontalAlignment="Right" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <UniformGrid Columns="4" Margin="0,16,0,0">
+                <Border Style="{StaticResource Card}" Padding="18,15" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="守护项" Style="{StaticResource MutedText}" />
+                        <TextBlock Text="{Binding TotalRules}" Style="{StaticResource StatValue}" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Padding="18,15" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="处于正常" Style="{StaticResource MutedText}" />
+                        <TextBlock Text="{Binding HealthyCount}" Style="{StaticResource StatValue}"
+                                   Foreground="{StaticResource Accent}" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Padding="18,15" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="待处理" Style="{StaticResource MutedText}" />
+                        <TextBlock Text="{Binding ProblemCount}" Style="{StaticResource StatValue}"
+                                   Foreground="{StaticResource Warn}" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Padding="18,15">
+                    <StackPanel>
+                        <TextBlock Text="今日已还原" Style="{StaticResource MutedText}" />
+                        <TextBlock Text="{Binding RestoredToday}" Style="{StaticResource StatValue}"
+                                   Foreground="{StaticResource Info}" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <Border Visibility="{Binding ShowUcpdBanner, Converter={StaticResource BoolToVis}}"
+                    Background="#121A29" BorderBrush="#28395B" BorderThickness="1" CornerRadius="14"
+                    Padding="18,15" Margin="0,16,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="34" Height="34" CornerRadius="10" Background="#1B2740" VerticalAlignment="Top">
+                        <TextBlock Text="!" FontSize="17" FontWeight="Bold" Foreground="{StaticResource Info}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="14,0,16,0">
+                        <TextBlock Text="Windows 正在保护默认浏览器关联" FontSize="13" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding UcpdText}" Style="{StaticResource MutedText}"
+                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                        <TextBlock Text="开启深度守护会停止 UCPD 驱动（需要管理员授权），之后才能自动还原被篡改的浏览器关联；可随时恢复。"
+                                   Style="{StaticResource MutedText}" FontSize="11" Foreground="#6E7F96"
+                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Button Content="开启深度守护" Style="{StaticResource GhostButton}" FontSize="12"
+                                Padding="12,7" Click="OnDeepMode" />
+                        <Button Content="×" Style="{StaticResource GhostButton}" FontSize="13" Padding="9,4"
+                                Margin="8,0,0,0" Command="{Binding DismissBannerCommand}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="最近动态" Style="{StaticResource SectionTitle}" />
+                            <Button Content="查看全部" Style="{StaticResource GhostButton}" FontSize="11"
+                                    Padding="10,5" HorizontalAlignment="Right" Click="OnShowAllHistory" />
+                        </Grid>
+                        <ItemsControl ItemsSource="{Binding RecentHistory}" Margin="0,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,7">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="64" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding TimeText}" Style="{StaticResource MutedText}" FontSize="11" VerticalAlignment="Center" />
+                                        <Border Grid.Column="1" Width="6" Height="6" CornerRadius="3"
+                                                Background="{Binding ActionBrush}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="{Binding TargetText}" FontSize="12.5" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding ChangeText}" Style="{StaticResource MutedText}" FontSize="11" />
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="3" Text="{Binding ActionText}" Foreground="{Binding ActionBrush}"
+                                                   FontSize="11.5" VerticalAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="暂无记录，一切安静。" Margin="0,10,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource MutedText}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasHistory}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="浏览器设置" Style="{StaticResource SectionTitle}" />
+                        <TextBlock Text="主页 · 启动页 · 默认搜索引擎" Style="{StaticResource MutedText}" FontSize="11" Margin="0,4,0,0" />
+                        <ItemsControl ItemsSource="{Binding Browsers}" Margin="0,8,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,7">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse Width="7" Height="7" Fill="{Binding StatusBrush}" VerticalAlignment="Top" Margin="0,5,10,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="12.5" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding DetailText}" Style="{StaticResource MutedText}"
+                                                       FontSize="11" TextWrapping="Wrap" MaxWidth="300" />
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Content="修复" Style="{StaticResource GhostButton}"
+                                                FontSize="11" Padding="9,4" VerticalAlignment="Center"
+                                                Visibility="{Binding IsOk, Converter={StaticResource InverseBoolToVis}}"
+                                                Click="OnRepairBrowser" Tag="{Binding}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="未检测到 Chromium 系浏览器配置" FontSize="11" Margin="0,8,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource MutedText}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Browsers.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
