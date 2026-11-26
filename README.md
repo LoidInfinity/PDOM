@@ -128,3 +128,8 @@ dotnet run --project src/Keep.Cli -- dump .html .zip  # 查看某个关联的两
 ## 隐私
 
 所有数据都在本机 `%LOCALAPPDATA%\Keep`：`baseline.json`（基准）、`settings.json`、`events.jsonl`（历史）、`browsers.json`。不联网、不上传。
+## License
+
+[MIT](LICENSE) © 2026 LoidInfinity
+
+	ools/ref/ 下第三方参考实现的许可见 [tools/ref/README.md](tools/ref/README.md)。
