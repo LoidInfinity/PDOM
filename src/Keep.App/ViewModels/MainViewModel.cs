@@ -118,7 +118,7 @@ public sealed class MainViewModel : ObservableObject
 
     public int BrowserProblemCount => Browsers.Count(b => !b.IsOk);
 
-    public IEnumerable<EventRow> RecentHistory => History.Take(6);
+    public IEnumerable<EventRow> RecentHistory => History.Take(5);
 
     public bool HasHistory => History.Count > 0;
 
